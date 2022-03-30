@@ -1,5 +1,5 @@
 # Dashboard
-TODO:
-[] File Explorer
-[] Cron Manager
-[] Monitoring System
+## TODO:
+ - [ ] File Explorer
+ - [ ] Cron Manager
+ - [ ] Monitoring System
