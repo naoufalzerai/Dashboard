@@ -1,2 +1,5 @@
-# video-to-ocr
-Export video frames to txt
+# Dashboard
+TODO:
+[] File Explorer
+[] Cron Manager
+[] Monitoring System
