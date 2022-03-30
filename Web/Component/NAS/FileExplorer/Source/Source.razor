@@ -1,0 +1,17 @@
+@namespace Web.Component.NAS.FileExplorer
+<div>
+    <div class="d-grid gap-2">
+        <button type="button" class="btn btn-primary btn-sm">
+            <i class="bi-plus-circle"></i> Add
+        </button>
+    </div>
+    <ul class="list-group">
+        @foreach (string s in Sources)
+        {
+            <li class="list-group-item list-group-item-action">@s</li>
+        }
+    </ul>
+</div>
+@code {
+    private List<string> Sources = new List<string>() { "NAS1", "GDRIVE", "MEGA" };
+}

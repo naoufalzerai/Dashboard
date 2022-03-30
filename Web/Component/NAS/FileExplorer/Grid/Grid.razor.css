@@ -1,0 +1,7 @@
+.grid{
+    display: grid;
+    grid-template-columns: 15px repeat(4,auto);
+}
+.path-input{
+    width: 100%;
+}

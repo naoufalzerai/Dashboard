@@ -1,0 +1,58 @@
+@namespace Web.Component.NAS.FileExplorer
+@using Entities.Model.NAS
+<div>
+    <input class="path-input form-control" list="path" placeholder="Path">
+    <datalist id="path">
+        <option>/</option>
+        <option>/usr</option>
+        <option>/home</option>
+        <option>/bin</option>
+    </datalist>
+    <div class="grid">
+        <div>
+            <input type="checkbox" name="" id="" @onchange="SelectAll">
+        </div>
+        <div>File</div>
+        <div>Created</div>
+        <div>Updated</div>
+        <div>Size</div>
+        @foreach (FilesModel f in files)
+        {
+                <div>
+                    <input type="checkbox" @bind="f.IsSelected">               
+                </div>
+                <div> <i class="@f.Type.Icon()"></i>@f.Name</div>
+                <div>@f.CreateDate.ToShortDateString()</div>
+                <div>@f.UpdateDate.ToShortDateString()</div>
+                <div>@f.Size</div>
+            
+        }
+    </div>
+</div>
+
+@code {
+    bool IsSelectAll = false; 
+    List<FilesModel> files = new List<FilesModel>(){
+                                                        new FilesModel(){
+                                                        Name="Song.mp3",
+                                                        Path="/Music",
+                                                        IsSelected=true
+                                                        },
+                                                        new FilesModel(){
+                                                        Name="test",
+                                                        Path="/Other"
+                                                        }
+                                                        ,
+                                                        new FilesModel(){
+                                                        Name="impo.txt",
+                                                        Path="/Files"
+                                                        }
+                                                    };
+
+    void SelectAll()
+    {
+        IsSelectAll = !IsSelectAll;
+        files.ForEach(f=>f.IsSelected=IsSelectAll);
+    }    
+
+}

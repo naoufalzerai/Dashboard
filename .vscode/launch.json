@@ -1,0 +1,59 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "WebAssembly App",
+      "type": "blazorwasm",
+      "request": "launch",
+      "url": "http://localhost:5231",
+      "cwd": "${workspaceFolder}/Web",
+      "userDataDir": false
+    },
+    {
+      "name": "Console",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build-console",
+      "program": "${workspaceFolder}/Console/bin/Debug/net6.0/Console.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/Console",
+      "console": "internalConsole",
+      "stopAtEntry": false
+    },
+    {
+      "name": "Test",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build-test",
+      "program": "${workspaceFolder}/Test/bin/Debug/net6.0/Test.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/Test",
+      "console": "internalConsole",
+      "stopAtEntry": false,
+      "emitEntryPoint": true,
+      "debugType": "portable"
+    },
+    {
+      "name": "Attach to Chrome",
+      "type": "pwa-chrome",
+      "request": "attach",
+      "port": 9222,
+      "url": "http://localhost:5231",
+      "webRoot": "${workspaceFolder}/Web"
+    },
+
+    {
+      "name": ".NET Core Attach",
+      "type": "coreclr",
+      "request": "attach"
+    },
+    {
+      "name": ".NET Core Attach",
+      "type": "coreclr",
+      "request": "attach"
+    }
+  ]
+}
