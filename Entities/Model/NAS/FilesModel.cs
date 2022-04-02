@@ -2,7 +2,7 @@ namespace Entities.Model.NAS;
 public class FilesModel
 {
     public bool IsSelected { get; set; }
-    public string Path { get; set; }
+    public string? Path { get; set; }
     public string Name { get; set; }
     public double Size { get; set; }
     public DateTime CreateDate { get; set; }
@@ -53,7 +53,7 @@ internal class IconAttribute : Attribute
 public static class FileTypeExtensions
 {
     public static string Icon(this FileType val)
-    {
+    {           
         IconAttribute[] attributes = (IconAttribute[])val.GetType()
             .GetField(val.ToString())
             .GetCustomAttributes(typeof(IconAttribute), false);

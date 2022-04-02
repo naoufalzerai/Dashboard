@@ -1,17 +1,56 @@
+@using Web.Component.Utils
+@using Entities.Entity
+@using BL.SMB
+@using EzSmb
 @namespace Web.Component.NAS.FileExplorer
 <div>
     <div class="d-grid gap-2">
-        <button type="button" class="btn btn-primary btn-sm">
+        <button @onclick="() => Modal.Open()" type="button" class="btn btn-primary btn-sm">
             <i class="bi-plus-circle"></i> Add
         </button>
     </div>
+    
     <ul class="list-group">
-        @foreach (string s in Sources)
+        @foreach (string s in _sources)
         {
             <li class="list-group-item list-group-item-action">@s</li>
         }
     </ul>
+    @if(_files!=null){
+    @foreach (Node s in _files.Result)
+            {
+                <li class="list-group-item list-group-item-action">@s.FullPath</li>
+            }
+    {{@_address}}
+    }
+    <Modal @ref="Modal" ParentSave="@SaveSource">
+        <input type="url" @bind="_address">
+        <input type="url" @bind="_password">
+        <input type="url" @bind="_username">
+    </Modal>
 </div>
 @code {
-    private List<string> Sources = new List<string>() { "NAS1", "GDRIVE", "MEGA" };
+    [Inject]
+    public ISmbServices _SmbServices { get; set; }
+    
+    private Modal Modal { get; set; } = null!;
+    private List<string> _sources = new List<string>() { "NAS1", "GDRIVE", "MEGA" };
+    private Task<Node[]> _files { get; set; }
+    private string? _address { get; set; }
+    private string? _password { get; set; }
+    private string? _username { get; set; }
+
+    private void SaveSource()
+    {
+        var smbConfiguration = new SmbConfiguration
+        {
+            Address = _address,
+            Password = _password,
+            Username = _username
+        };
+        _files = _SmbServices.GetFilesAsync(smbConfiguration);
+        
+        _address =_password =_username = "";
+    }
+    
 }

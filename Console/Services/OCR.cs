@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Configuration;
-using Entities.Config;
+using Entities.Configuration;
 
 
 internal class OCR : IService

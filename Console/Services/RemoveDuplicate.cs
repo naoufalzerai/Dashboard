@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Configuration;
-using Entities.Config;
+using Entities.Configuration;
 using BL.Video;
 
 
@@ -16,7 +16,7 @@ class RemoveDuplicate : IService
         if (_settings.RemoveDuplicate)
         {
             System.Console.WriteLine("Start Remove();");
-            VideoHelper.Remove(_settings.Folder);
+            VideoHelper.Remove(_settings.Folder??"");
         }
 
     }
