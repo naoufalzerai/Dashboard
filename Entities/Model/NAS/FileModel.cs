@@ -1,10 +1,10 @@
 namespace Entities.Model.NAS;
-public class FilesModel
+public class FileModel
 {
     public bool IsSelected { get; set; }
     public string? Path { get; set; }
     public string Name { get; set; }
-    public double Size { get; set; }
+    public long Size { get; set; }
     public DateTime CreateDate { get; set; }
     public DateTime UpdateDate { get; set; }
 

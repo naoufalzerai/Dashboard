@@ -23,9 +23,9 @@ public class SmbUnitTest
         
         _smbConfiguration = new SmbConfiguration
         {
-            Address = @"\\nas",
-            Username = "user",
-            Password = "pass"
+            Address = @"\\meganas.local",
+            Username = "",
+            Password = ""
         };
         
         _testOutputHelper = testOutputHelper;
@@ -37,6 +37,7 @@ public class SmbUnitTest
     public async void GetFilesAsync_ShouldGetNodes()
     {
         Node[] files = await _smbServices.GetFilesAsync(_smbConfiguration);
+        _testOutputHelper.WriteLine(files.Length.ToString());
         files.Should().NotBeEmpty();
     }
 

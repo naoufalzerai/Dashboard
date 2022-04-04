@@ -1,28 +1,28 @@
 @using Web.Component.Utils
 @using Entities.Entity
 @using BL.SMB
-@using EzSmb
+@using Web.State
+@implements IDisposable
+@inject FileManagerState FileManagerState
+
+
 @namespace Web.Component.NAS.FileExplorer
 <div>
     <div class="d-grid gap-2">
+        @FileManagerState.Property.Address
         <button @onclick="() => Modal.Open()" type="button" class="btn btn-primary btn-sm">
             <i class="bi-plus-circle"></i> Add
         </button>
     </div>
-    
     <ul class="list-group">
-        @foreach (string s in _sources)
+
+        @foreach (SmbConfiguration s in _sources)
         {
-            <li class="list-group-item list-group-item-action">@s</li>
+            <button class="list-group-item list-group-item-action" @onclick="()=>FileManagerState.Property=s">
+                <i class="bi-hdd-network-fill"></i> @s.Address.Replace('\\',' ')
+            </button>
         }
     </ul>
-    @if(_files!=null){
-    @foreach (Node s in _files.Result)
-            {
-                <li class="list-group-item list-group-item-action">@s.FullPath</li>
-            }
-    {{@_address}}
-    }
     <Modal @ref="Modal" ParentSave="@SaveSource">
         <input type="url" @bind="_address">
         <input type="url" @bind="_password">
@@ -30,12 +30,18 @@
     </Modal>
 </div>
 @code {
-    [Inject]
-    public ISmbServices _SmbServices { get; set; }
-    
     private Modal Modal { get; set; } = null!;
-    private List<string> _sources = new List<string>() { "NAS1", "GDRIVE", "MEGA" };
-    private Task<Node[]> _files { get; set; }
+    private List<SmbConfiguration> _sources = new List<SmbConfiguration>(){
+    new SmbConfiguration(){
+    Address=@"\\meganas.local",
+    Username="",
+    Password=""
+    },
+    new SmbConfiguration{
+    Address=@"\\mega"
+    }
+    };
+
     private string? _address { get; set; }
     private string? _password { get; set; }
     private string? _username { get; set; }
@@ -48,9 +54,17 @@
             Password = _password,
             Username = _username
         };
-        _files = _SmbServices.GetFilesAsync(smbConfiguration);
-        
-        _address =_password =_username = "";
+        _address = _password = _username = "";
     }
-    
+
+
+    protected override void OnInitialized()
+    {
+        FileManagerState.OnChange += StateHasChanged;
+    }
+    public void Dispose()
+    {
+        FileManagerState.OnChange -= StateHasChanged;
+    }
+
 }

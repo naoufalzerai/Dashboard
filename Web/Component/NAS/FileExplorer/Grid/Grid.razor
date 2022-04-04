@@ -1,6 +1,13 @@
 @namespace Web.Component.NAS.FileExplorer
+@using Entities.Entity
 @using Entities.Model.NAS
+@using Web.State
+@using BL.SMB;
+@implements IDisposable
+@inject FileManagerState FileManagerState
+
 <div>
+    @FileManagerState.Property.Address
     <input class="path-input form-control" list="path" placeholder="Path">
     <datalist id="path">
         <option>/</option>
@@ -10,13 +17,13 @@
     </datalist>
     <div class="grid">
         <div>
-            <input type="checkbox" name="" id="" @onchange="SelectAll">
+            <input type="checkbox" name="" id="" @onchange="SelectAll">            
         </div>
         <div>File</div>
         <div>Created</div>
         <div>Updated</div>
         <div>Size</div>
-        @foreach (FilesModel f in files)
+        @foreach (FileModel f in files)
         {
                 <div>
                     <input type="checkbox" @bind="f.IsSelected">               
@@ -31,28 +38,45 @@
 </div>
 
 @code {
+
     bool IsSelectAll = false; 
-    List<FilesModel> files = new List<FilesModel>(){
-                                                        new FilesModel(){
+    
+    List<FileModel> files = new List<FileModel>(){
+                                                        new FileModel(){
                                                         Name="Song.mp3",
                                                         Path="/Music",
                                                         IsSelected=true
                                                         },
-                                                        new FilesModel(){
+                                                        new FileModel(){
                                                         Name="test",
                                                         Path="/Other"
                                                         }
                                                         ,
-                                                        new FilesModel(){
-                                                        Name="impo.txt",
+                                                        new FileModel(){
+                                                        Name="impot.txt",
                                                         Path="/Files"
                                                         }
                                                     };
-
+     
     void SelectAll()
     {
         IsSelectAll = !IsSelectAll;
         files.ForEach(f=>f.IsSelected=IsSelectAll);
     }    
+
+    protected override async void OnInitialized()
+    {
+        FileManagerState.OnChange += UpdateSource;
+    }
+
+    public void Dispose()
+    {
+        FileManagerState.OnChange -= UpdateSource;
+    }
+
+    private async void UpdateSource()
+    {
+        StateHasChanged();
+    }
 
 }

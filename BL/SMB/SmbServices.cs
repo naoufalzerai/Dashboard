@@ -8,12 +8,12 @@ namespace BL.SMB;
 
 public class SmbServices : ISmbServices
 {
-    public async Task<Node[]> GetFilesAsync(SmbConfiguration parameters)
+    public async Task<Node[]>  GetFilesAsync(SmbConfiguration parameters)
     {
-        var folder = await Node.GetNode(parameters.Address, parameters.Username, parameters.Password);
+        var folder = await Node.GetNode(parameters.Address, parameters.Username, parameters.Password,true);
+        Console.WriteLine($"khra : {folder==null}");
         // List items
-        var nodes = await folder.GetList();
-        return nodes;
+        return await folder.GetList();
     }
 
 
