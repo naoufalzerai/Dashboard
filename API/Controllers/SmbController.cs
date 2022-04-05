@@ -23,7 +23,7 @@ public class SmbController : ControllerBase
         {
             Name = x.Name,
             Path = x.FullPath,
-            Size = x.Size ?? 0,
+            Size = x.Size ,
             CreateDate = x.Created ?? new DateTime(),
             UpdateDate = x.Updated ?? new DateTime(),
         }).ToArray();

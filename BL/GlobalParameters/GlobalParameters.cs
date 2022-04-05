@@ -17,4 +17,9 @@ public class GlobalParameters:IGlobalParameters
     {
         return _parametersRepository.AddAsync(parameters);
     }
+
+    public Task<IList<SmbConfiguration>> GetSmbConfig()
+    {
+        return _parametersRepository.GetAllAsync();
+    }
 }

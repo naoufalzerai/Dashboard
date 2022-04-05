@@ -1,0 +1,72 @@
+@namespace WebApp.Component.NAS.FileExplorer
+@using Entities.Entity
+@using Entities.Model.NAS
+@using WebApp.State
+@using BL.SMB;
+@implements IDisposable
+@inject FileManagerState _fileManagerState
+@inject ISmbServices _smbServices
+
+<div>
+    @_fileManagerState.Property.Address
+    <input class="path-input form-control" list="path" placeholder="Path">
+    <datalist id="path">
+        <option>/</option>
+        <option>/usr</option>
+        <option>/home</option>
+        <option>/bin</option>
+    </datalist>
+    <div class="grid">
+        <div>
+            <input type="checkbox" name="" id="" @onchange="SelectAll">            
+        </div>
+        <div>File</div>
+        <div>Created</div>
+        <div>Updated</div>
+        <div>Size</div>
+        @if(files is not null){
+            @foreach (FileModel f in files)
+            {
+                    <div>
+                        <input type="checkbox" @bind="f.IsSelected">               
+                    </div>
+                    <div> <i class="@f.Type.Icon()"></i>@f.Name</div>
+                    <div>@f.CreateDate.ToShortDateString()</div>
+                    <div>@f.UpdateDate.ToShortDateString()</div>
+                    <div>@f.Size</div>
+                
+            }
+        }
+    </div>
+</div>
+
+@code {
+
+    bool IsSelectAll = false;
+
+    public List<FileModel> files { get; set; }
+     
+    void SelectAll()
+    {
+        IsSelectAll = !IsSelectAll;
+        files.ForEach(f=>f.IsSelected=IsSelectAll);
+    }    
+
+    protected override async void OnInitialized()
+    {
+        _fileManagerState.OnChange += UpdateSource;
+    }
+
+    public void Dispose()
+    {
+        _fileManagerState.OnChange -= UpdateSource;
+    }
+
+    private async void UpdateSource()
+    {
+        var tmp  = await _smbServices.GetFilesAsync(_fileManagerState.Property);
+        files = tmp.ToList();
+        StateHasChanged();
+    }
+
+}

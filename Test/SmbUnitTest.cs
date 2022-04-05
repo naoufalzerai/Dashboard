@@ -36,8 +36,7 @@ public class SmbUnitTest
     [Fact]
     public async void GetFilesAsync_ShouldGetNodes()
     {
-        Node[] files = await _smbServices.GetFilesAsync(_smbConfiguration);
-        _testOutputHelper.WriteLine(files.Length.ToString());
+        var files = await _smbServices.GetFilesAsync(_smbConfiguration);
         files.Should().NotBeEmpty();
     }
 

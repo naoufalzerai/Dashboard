@@ -1,6 +1,7 @@
 using DAL;
 using DAL.Repositories;
 using Entities.Entity;
+using Entities.Model.NAS;
 using EzSmb;
 
 namespace BL.SMB;
@@ -8,12 +9,20 @@ namespace BL.SMB;
 
 public class SmbServices : ISmbServices
 {
-    public async Task<Node[]>  GetFilesAsync(SmbConfiguration parameters)
+    public async Task<IEnumerable<FileModel>>  GetFilesAsync(SmbConfiguration parameters)
     {
         var folder = await Node.GetNode(parameters.Address, parameters.Username, parameters.Password,true);
-        Console.WriteLine($"khra : {folder==null}");
+        
         // List items
-        return await folder.GetList();
+        var result = await folder.GetList();
+        return result.Select(x => new FileModel()
+        {
+            Name = x.Name,
+            Path = x.FullPath,
+            Size = x.Size ?? 0,
+            CreateDate = x.Created ?? new DateTime(),
+            UpdateDate = x.Updated ?? new DateTime(),
+        }).ToArray();
     }
 
 
