@@ -20,6 +20,8 @@ public class SmbServices : ISmbServices
             Name = x.Name,
             Path = x.FullPath,
             Size = x.Size ?? 0,
+            IsFolder = (x.Type == NodeType.Folder),
+            IsServer = (x.Type == NodeType.Server),
             CreateDate = x.Created ?? new DateTime(),
             UpdateDate = x.Updated ?? new DateTime(),
         }).ToArray();
