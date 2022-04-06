@@ -5,3 +5,10 @@
 .path-input{
     width: 100%;
 }
+.flex{
+    display: flex;
+    margin: 1.2em 0;
+}
+.flex>i{
+    margin-right: 0.5em;
+}
