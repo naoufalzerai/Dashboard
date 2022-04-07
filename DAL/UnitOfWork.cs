@@ -11,6 +11,7 @@ public class UnitOfWork:IUnitOfWork
     {
         _redis= ConnectionMultiplexer.Connect(connexionString);;
         SmbConfiguration = new Repository<SmbConfiguration>(_redis);
+        CronConfiguration = new Repository<CronConfiguration>(_redis);
     }
     public void Dispose()
     {
@@ -18,6 +19,7 @@ public class UnitOfWork:IUnitOfWork
     }
 
     public IRepository<SmbConfiguration> SmbConfiguration { get; }
+    public IRepository<CronConfiguration> CronConfiguration { get; }
     public void Save()
     {
         throw new NotImplementedException();

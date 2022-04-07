@@ -1,16 +1,41 @@
+@using Entities.Entity
+@using BL.Cron
+@using BL.GlobalParameters
+@using Entities.Model.Cron
+@inject IGlobalParameters _globalParameters
 @namespace WebApp.Component.Cron
-<div class="card">
+<div class="grid">
+    <div class="card ">
         <div class="card-body">
-            <h3>Cron</h3>
+            <h3 style="font-size: 5rem;display: flex;justify-content:center;align-items:center;height:100%;" class="click">+</h3>
         </div>
     </div>
-<div class="card">
-        <div class="card-body">
-            <h3>Cron</h3>
-        </div>
-    </div>
+    
+    @if (_CronConfigurations is not null)
+    {
+        @foreach (var c in _CronConfigurations)
+        {
+            <div class="card ">
+                <div class="card-body">
+                    <h3>@c.Name</h3>
+                    
+                    <p>Description : @c.Description</p>
+                    <p>Occurrence : @c.Occurrence</p>
+                    <p>Status : @c.Status</p>
+                </div>
+            </div>
+        }
+    }
 
+</div>
 
 @code {
-    
+    public List<CronModel> _CronConfigurations { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var tmp = await _globalParameters.GetCronConfiguration();
+        _CronConfigurations = tmp.ToList();
+    }
+
 }

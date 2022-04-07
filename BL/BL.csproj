@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
     <PackageReference Include="EzSmb" Version="1.3.10" />
     <PackageReference Include="FFMpegCore" Version="4.7.0" />
     <ProjectReference Include="..\DAL\DAL.csproj" />

@@ -19,7 +19,7 @@ public class DalUnitTest
     }
 
     [Fact]
-    public async void Repository_AddAsync_ShouldInsert()
+    public async void RepositorySmbConfiguration_AddAsync_ShouldInsert()
     {
         //arrange
         SmbConfiguration parameters = new Fixture().Create<SmbConfiguration>();
@@ -27,13 +27,31 @@ public class DalUnitTest
         await _unitOfWork.SmbConfiguration.AddAsync(parameters);
         //assert
     }
-    
     [Fact]
-    public async void Repository_GetAllAsync_ShouldReturnList()
+    public async void RepositoryCronConfiguration_AddAsync_ShouldInsert()
+    {
+        //arrange
+        CronConfiguration parameters = new Fixture().Create<CronConfiguration>();
+        //act
+        await _unitOfWork.CronConfiguration.AddAsync(parameters);
+        //assert
+    }
+    [Fact]
+    public async void RepositorySmbConfiguration_GetAllAsync_ShouldReturnList()
     {
         //arrange
         //act
         var result = _unitOfWork.SmbConfiguration.GetAllAsync();
+        //assert
+        result.Should().NotBeNull();
+    }
+    
+    [Fact]
+    public async void RepositoryCronConfiguration_GetAllAsync_ShouldReturnList()
+    {
+        //arrange
+        //act
+        var result = _unitOfWork.CronConfiguration.GetAllAsync();
         //assert
         result.Should().NotBeNull();
     }

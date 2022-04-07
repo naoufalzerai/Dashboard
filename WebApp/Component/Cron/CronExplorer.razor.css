@@ -1,0 +1,17 @@
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-rows: auto;
+    grid-gap: 1rem;
+}
+
+.card {
+    padding: .5rem;
+}
+.card > h3{
+    margin: 0;
+    color: #2A2F5B;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.6;
+}

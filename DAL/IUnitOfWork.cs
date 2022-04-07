@@ -7,5 +7,6 @@ using System;
 public interface IUnitOfWork : IDisposable
 {
     IRepository<SmbConfiguration> SmbConfiguration { get; }
+    public IRepository<CronConfiguration> CronConfiguration { get; }
     void Save();
 }
