@@ -9,7 +9,7 @@ public class UnitOfWork:IUnitOfWork
     private readonly ConnectionMultiplexer _redis;
     public UnitOfWork(string connexionString)
     {
-        _redis= ConnectionMultiplexer.Connect(connexionString);;
+        _redis= ConnectionMultiplexer.Connect(connexionString);
         SmbConfiguration = new Repository<SmbConfiguration>(_redis);
         CronConfiguration = new Repository<CronConfiguration>(_redis);
     }
@@ -20,6 +20,7 @@ public class UnitOfWork:IUnitOfWork
 
     public IRepository<SmbConfiguration> SmbConfiguration { get; }
     public IRepository<CronConfiguration> CronConfiguration { get; }
+
     public void Save()
     {
         throw new NotImplementedException();

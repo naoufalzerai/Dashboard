@@ -17,6 +17,7 @@ builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddSingleton<ISmbServices,SmbServices>();
 builder.Services.AddSingleton<IGlobalParameters>(new GlobalParameters(unitOfWork));
 builder.Services.AddSingleton<FileManagerState>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

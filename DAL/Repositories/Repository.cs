@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using Entities.Entity;
 using Newtonsoft.Json;
 using StackExchange.Redis;
 
@@ -16,15 +17,22 @@ namespace DAL.Repositories
             this._context = redis.GetDatabase();
         }
 
-        public Task AddAsync(TEntity entity)
+        public Task AddAsync(IEntity entity)
         {
-            RedisValue value = new RedisValue(Serialize(entity));
-            return this._context.ListLeftPushAsync(this._key, value);
+             
+            entity.Id = Guid.NewGuid();
+            RedisValue value = Serialize(entity);
+            return _context.SetAddAsync(this._key, value);
         }
 
-        Task IRepository<TEntity>.AddRangeAsync(IEnumerable<TEntity> entities)
+        public Task AddRangeAsync(IEnumerable<TEntity> entities)
         {
-            throw new NotImplementedException();
+            List<RedisValue> values = new List<RedisValue>();
+            foreach (var entity in entities)
+            {
+                values.Add(Serialize(entities));
+            }
+            return _context.SetAddAsync(_key, values.ToArray());
         }
 
         IEnumerable<TEntity> IRepository<TEntity>.Find(Expression<Func<TEntity, bool>> predicate)
@@ -40,26 +48,37 @@ namespace DAL.Repositories
             return Task.FromResult(list);
 
         }
+        private  TEntity Deserialize<TEntity>(RedisValue serialized)
+        {
+            if (serialized.IsNull)
+                return default(TEntity)!;
+            return JsonConvert.DeserializeObject<TEntity>(serialized.ToString());
+        }
         
         private string Serialize(object obj)
         {
+            if (obj is null)
+                return default;
             return JsonConvert.SerializeObject(obj);
         }
         Task<IList<TEntity>> IRepository<TEntity>.GetAllAsync()
         {
-            //var result = _context.ListRange(this._key);
-            var result = Deserialize<TEntity>(_context.ListRange(this._key));
-            return result;
+            var result = _context.SetScan(_key).ToArray();
+            return Deserialize<TEntity>(result);
         }
 
-        ValueTask<TEntity> IRepository<TEntity>.GetByIdAsync(int id)
+        TEntity IRepository<TEntity>.GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            
+            var result = _context.SetScan(_key, $"*\"Id\":\"{id}\"*")
+                .FirstOrDefault();
+            return Deserialize<TEntity>(result);
         }
 
         void IRepository<TEntity>.Remove(TEntity entity)
         {
-            throw new NotImplementedException();
+            var val = Serialize(entity);
+            _context.SetRemove(_key, val);
         }
 
         void IRepository<TEntity>.RemoveRange(IEnumerable<TEntity> entities)

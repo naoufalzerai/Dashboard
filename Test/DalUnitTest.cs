@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using AutoFixture;
 using DAL;
 using Entities.Entity;
@@ -18,6 +19,21 @@ public class DalUnitTest
         _testOutputHelper = testOutputHelper;
     }
 
+    [Fact]
+    public async void RepositorySmbConfiguration_Remove_ShouldRemove()
+    {
+        //arrange
+        SmbConfiguration parameters = new Fixture().Create<SmbConfiguration>();
+        //act
+        await _unitOfWork.SmbConfiguration.AddAsync(parameters);
+        SmbConfiguration afterInsert = _unitOfWork.SmbConfiguration.GetByIdAsync(parameters.Id);
+        _unitOfWork.SmbConfiguration.Remove(parameters);
+        SmbConfiguration afterRemove = _unitOfWork.SmbConfiguration.GetByIdAsync(parameters.Id);
+        //assert
+        afterInsert.Should().NotBeNull();
+        afterRemove.Should().BeNull();
+    }
+    
     [Fact]
     public async void RepositorySmbConfiguration_AddAsync_ShouldInsert()
     {
@@ -41,7 +57,7 @@ public class DalUnitTest
     {
         //arrange
         //act
-        var result = _unitOfWork.SmbConfiguration.GetAllAsync();
+        var result = await _unitOfWork.SmbConfiguration.GetAllAsync();
         //assert
         result.Should().NotBeNull();
     }

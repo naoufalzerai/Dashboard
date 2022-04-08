@@ -10,6 +10,11 @@
     <ProjectReference Include="..\BL\BL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Component\NAS\FileExplorer\Home\Bookmarks.razor" />
+    <_ContentIncludedByDefault Remove="Component\NAS\FileExplorer\Home\Search.razor" />
+  </ItemGroup>
+
 
 
 </Project>

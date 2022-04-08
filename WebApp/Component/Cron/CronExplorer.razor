@@ -2,12 +2,13 @@
 @using BL.Cron
 @using BL.GlobalParameters
 @using Entities.Model.Cron
+@using WebApp.Component.Utils
 @inject IGlobalParameters _globalParameters
 @namespace WebApp.Component.Cron
 <div class="grid">
     <div class="card ">
         <div class="card-body">
-            <h3 style="font-size: 5rem;display: flex;justify-content:center;align-items:center;height:100%;" class="click">+</h3>
+            <h3 style="font-size: 5rem;display: flex;justify-content:center;align-items:center;height:100%;" class="click" @onclick="() => Modal.Open()">+</h3>
         </div>
     </div>
     
@@ -28,14 +29,37 @@
     }
 
 </div>
-
+    <Modal @ref="Modal" ParentSave="@SaveCron" Title="New Cron">
+        <input class="form-control mb-2" type="url" placeholder="Description" @bind="Description">
+        <input class="form-control mb-2" type="text" placeholder="Name" @bind="Name">
+        <input class="form-control mb-2" type="text" placeholder="Occurrence" @bind="Occurrence">
+        <textarea class="form-control mb-2" @bind="Script" placeholder="Script"></textarea>
+    </Modal>
 @code {
     public List<CronModel> _CronConfigurations { get; set; }
+    private Modal Modal { get; set; } = null!;
+
+    private string? Description { get; set; }
+    private string? Name { get; set; }
+    private string? Occurrence { get; set; }
+    private string? Script { get; set; }
+    
 
     protected override async Task OnInitializedAsync()
     {
         var tmp = await _globalParameters.GetCronConfiguration();
         _CronConfigurations = tmp.ToList();
+    }
+
+    public void SaveCron()
+    {
+        CronModel model = new CronModel()
+        {
+            Description = "",
+            Name = "",
+            Occurrence = "",
+            Script = ""
+        };
     }
 
 }
