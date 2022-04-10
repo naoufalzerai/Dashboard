@@ -3,7 +3,7 @@
 @using BL.GlobalParameters
 @using Entities.Model.Cron
 @using WebApp.Component.Utils
-@inject IGlobalParameters _globalParameters
+@inject ICronServices _cronServices
 @namespace WebApp.Component.Cron
 <div class="grid">
     <div class="card ">
@@ -47,7 +47,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var tmp = await _globalParameters.GetCronConfiguration();
+        var tmp = await _cronServices.GetCronConfiguration();
         _CronConfigurations = tmp.ToList();
     }
 

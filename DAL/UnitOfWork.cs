@@ -12,6 +12,7 @@ public class UnitOfWork:IUnitOfWork
         _redis= ConnectionMultiplexer.Connect(connexionString);
         SmbConfiguration = new Repository<SmbConfiguration>(_redis);
         CronConfiguration = new Repository<CronConfiguration>(_redis);
+        HomeConfiguration = new Repository<HomeConfiguration>(_redis);
     }
     public void Dispose()
     {
@@ -20,6 +21,7 @@ public class UnitOfWork:IUnitOfWork
 
     public IRepository<SmbConfiguration> SmbConfiguration { get; }
     public IRepository<CronConfiguration> CronConfiguration { get; }
+    public IRepository<HomeConfiguration> HomeConfiguration { get; }
 
     public void Save()
     {

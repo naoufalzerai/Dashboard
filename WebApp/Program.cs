@@ -1,8 +1,9 @@
+using BL.Cron;
 using BL.GlobalParameters;
+using BL.Home;
 using BL.SMB;
 using DAL;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
+using WebApp;
 using WebApp.Data;
 using WebApp.State;
 
@@ -15,7 +16,12 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 
 builder.Services.AddSingleton<ISmbServices,SmbServices>();
-builder.Services.AddSingleton<IGlobalParameters>(new GlobalParameters(unitOfWork));
+
+var blWithUnitOfWork = Helper.RegisterServices();
+blWithUnitOfWork.ForEach(t => builder
+    .Services
+    .AddSingleton(t,Activator.CreateInstance(Helper.GetClassFromInterface(t),unitOfWork)!));
+
 builder.Services.AddSingleton<FileManagerState>();
 
 var app = builder.Build();

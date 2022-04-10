@@ -1,5 +1,6 @@
 using System.Drawing.Printing;
 using AutoMapper;
+using BL.Interfaces;
 using DAL;
 using DAL.Repositories;
 using Entities.Entity;
@@ -35,10 +36,5 @@ public class GlobalParameters:IGlobalParameters
     {
         return _smb.GetAllAsync();
     }
-
-    public async Task<IList<CronModel>> GetCronConfiguration()
-    {
-        var result = await _cron.GetAllAsync();
-        return Mapper.Map<IList<CronModel>>(result);
-    }
+    
 }
